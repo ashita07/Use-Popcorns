@@ -1,5 +1,4 @@
-import { toHaveAccessibleDescription } from "@testing-library/jest-dom/matchers";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const tempMovieData = [
   {
@@ -51,53 +50,20 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const key = "59943de1";
-const tempQuery = "interstellar";
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
-
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=${tempQuery}`
-        );
-        if (!res.ok)
-          throw new Error("something went wrong with fetching movies");
-
-        const data = await res.json();
-
-        if (data.Response === "False") throw new Error("movie not found");
-
-        setMovies(data.Search);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchMovies();
-  }, []);
 
   return (
     <div>
       <Navbar>
         <Logo />
-        <Search query={query} setQuery={setQuery} />
+        <Search />
         <Result movies={movies} />
       </Navbar>
       <Main>
         <Box>
-          {/* {loading ? <Loader /> : <UnorderedListMovies movies={movies} />} */}
-          {loading && <Loader />}
-          {!loading && !error && <UnorderedListMovies movies={movies} />}
-          {error && <ErrorMessage message={error} />}
+          <UnorderedListMovies movies={movies} />
         </Box>
         <Box>
           <Summary watched={watched} />
@@ -107,13 +73,7 @@ export default function App() {
     </div>
   );
 }
-function Loader() {
-  return <p className="loader">Loading</p>;
-}
 
-function ErrorMessage({ message }) {
-  return <p className="error">{message}</p>;
-}
 function Navbar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
 }
@@ -135,7 +95,8 @@ function Logo() {
   );
 }
 
-function Search({ query, setQuery }) {
+function Search() {
+  const [query, setQuery] = useState("");
   return (
     <input
       className="search"
