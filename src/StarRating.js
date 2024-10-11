@@ -20,7 +20,7 @@ StarRating.propTypes = {
 };
 
 export default function StarRating({
-  maxRating = 3,
+  maxRating = 5,
   color = "#fcc419",
   size = 48,
   className = "",
@@ -39,8 +39,8 @@ export default function StarRating({
   };
 
   function handleRating(rating) {
-    setRating(rating);
     onSetRating(rating);
+    setRating(rating);
   }
 
   return (
