@@ -76,8 +76,9 @@ export default function App() {
           if (data.Response === "False") throw new Error("movie not found");
 
           setMovies(data.Search);
+          setError("");
         } catch (err) {
-          setError(err.message);
+          if (error.name !== "AbortError") setError(err.message);
         } finally {
           setLoading(false);
         }
