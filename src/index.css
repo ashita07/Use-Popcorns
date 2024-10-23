@@ -54,9 +54,16 @@ body {
   max-width: 42rem;
   background-color: var(--color-background-500);
   border-radius: 0.9rem;
-
-  overflow: hidden;
+  overflow: scroll; /* Allow scrolling */
   position: relative;
+
+  /* Hide scrollbar for WebKit-based browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.box::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .loader {
@@ -139,7 +146,9 @@ body {
 .list {
   list-style: none;
   padding: 0.8rem 0;
-  overflow: hidden;
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
 }
 
 .list-watched {
@@ -339,3 +348,11 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/*
+SPACING SYSTEM (px)
+2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128
+
+FONT SIZE SYSTEM (px)
+10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 /52 / 62 / 74 / 86 / 98
+*/
