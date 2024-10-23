@@ -2,6 +2,7 @@ import StarRating from "./StarRating";
 import { useState, useEffect, useRef } from "react";
 import { useMovies } from "./useMovies";
 import { useStorage } from "./useStorage";
+import { useKey } from "./useKey";
 
 // const tempMovieData = [
 //   {
@@ -135,22 +136,28 @@ function Logo() {
 function Search({ query, setQuery }) {
   const input = useRef(null);
 
-  useEffect(
-    function () {
-      input.current.focus();
-      function callback(e) {
-        if (document.activeElement === input.current) return;
-        if (e.code === "Enter") {
-          input.current.focus();
-          setQuery("");
-        }
-      }
+  useKey("enter", function () {
+    if (document.activeElement === input.current) return;
+    input.current.focus();
+    setQuery("");
+  });
 
-      document.addEventListener("keydown", callback);
-      return () => document.addEventListener("keydown", callback);
-    },
-    [setQuery]
-  );
+  // useEffect(
+  //   function () {
+  //     input.current.focus();
+  //     function callback(e) {
+  //       if (e.code === "Enter") {
+  //         if (document.activeElement === input.current) return;
+  //         input.current.focus();
+  //         setQuery("");
+  //       }
+  //     }
+
+  //     document.addEventListener("keydown", callback);
+  //     return () => document.addEventListener("keydown", callback);
+  //   },
+  //   [setQuery]
+  // );
 
   // useEffect(function () {
   //   const el = document.querySelector(".search");
@@ -257,21 +264,23 @@ function MovieDetails({ selectedId, deselectId, handleAddWatched, watched }) {
     (movie) => movie.imdbID === selectedId
   )?.userRated;
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          deselectId();
-        }
-      }
-      document.addEventListener("keydown", callback);
+  // useEffect(
+  //   function () {
+  //     function callback(e) {
+  //       if (e.code === "Escape") {
+  //         deselectId();
+  //       }
+  //     }
+  //     document.addEventListener("keydown", callback);
 
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [deselectId]
-  );
+  //     return function () {
+  //       document.removeEventListener("keydown", callback);
+  //     };
+  //   },
+  //   [deselectId]
+  // );
+
+  useKey("Escape", deselectId);
 
   const {
     Title: title,
