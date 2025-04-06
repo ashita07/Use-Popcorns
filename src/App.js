@@ -283,6 +283,11 @@ function MovieDetails({ selectedId, deselectId, handleAddWatched, watched }) {
           `http://www.omdbapi.com/?apikey=${key}&i=${selectedId}`
         );
         const data = await res.json();
+        if (data.Response === "False") {
+          console.error("OMDB error:", data.Error);
+          setMovieLoader(false);
+          return;
+        }
         setMovie(data);
       }
       getMovieId();
@@ -310,7 +315,8 @@ function MovieDetails({ selectedId, deselectId, handleAddWatched, watched }) {
       year,
       poster,
       imdbRating: Number(imdbRating),
-      runtime: Number(runtime.split(" ")[0]),
+      runtime: runtime ? Number(runtime.split(" ")[0]) : 0,
+
       userRated,
       countRatingDecisions: countRef.current,
     };
